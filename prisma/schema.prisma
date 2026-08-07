@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model users {
+  id            Int             @id @default(autoincrement())
+  avatar        String?
+  role          role
+  name          String          @db.VarChar(255)
+  email         String          @unique @db.VarChar(300)
+  password      String          @db.VarChar(255)
+  house_id      Int?
+  earningpoints earningpoints[]
+  losspoints    losspoints[]
+  houses        houses?         @relation(fields: [house_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_house")
+}
+
+model houses {
+  id        Int     @id @default(autoincrement())
+  name      String? @db.VarChar(255)
+  banner    String? @db.VarChar(300)
+  describle String?
+  users     users[]
+}
+
+model earningpoints {
+  id        Int       @id @default(autoincrement())
+  points    Int?
+  createdat DateTime? @default(now()) @db.Timestamp(6)
+  userid    Int?
+  users     users?    @relation(fields: [userid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model losspoints {
+  id        Int       @id @default(autoincrement())
+  points    Int?
+  createdat DateTime? @default(now()) @db.Timestamp(6)
+  userid    Int?
+  users     users?    @relation(fields: [userid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+enum role {
+  teacher
+  student
+}
