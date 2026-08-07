@@ -1,4 +1,3 @@
-import { success } from "zod";
 import { prisma } from "../../libs/prisma";
 import { User } from "../../types/user";
 

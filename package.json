@@ -7,7 +7,9 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "dev": "node --import=tsx --watch ./src/server.ts"
+    "dev": "node --import=tsx --watch ./src/server.ts",
+    "copy-example": "copy .env .env.example",
+    "copy": "copy .env.example .env"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
