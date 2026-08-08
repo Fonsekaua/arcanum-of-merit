@@ -1,71 +1,85 @@
-import { success } from "zod";
 import { prisma } from "../../libs/prisma";
 import { House } from "../../types/house";
 
-const houses = prisma.houses
+const houses = prisma.houses;
 
 const HouseModel = {
-    findManyHouses: async() => {
+
+    findManyHouses: async () => {
         try {
             const response = await houses.findMany();
+
             return {
-                sucess: true,
-                houses: response
-            }
-        }catch(err) {
-            console.log('Ocorreu um erro:',err)
+                success: true,
+                message: "Casas encontradas!",
+                response
+            };
+
+        } catch (err) {
+            console.log("Ocorreu um erro:", err);
+
             return {
-                sucess: false,
+                success: false,
                 err
-            }
+            };
         }
     },
-    createHouse: async(data: House) => {
-           try {
-            const response = await houses.create({data});
+
+
+    createHouse: async (data: House) => {
+        try {
+            const response = await houses.create({
+                data
+            });
+
             return {
-                sucess: true,
-                houses: response
-            }
-        }catch(err) {
-            console.log('Ocorreu um erro:',err)
+                success: true,
+                message: "Casa criada com successo!",
+                response
+            };
+
+        } catch (err) {
+            console.log("Ocorreu um erro:", err);
+
             return {
-                sucess: false,
+                success: false,
                 err
-            }
+            };
         }
     },
+
+
     findUsersByHouse: async (houseID: number) => {
         try {
-             const response = await houses.findFirst({
+            const response = await houses.findUnique({
                 where: {
                     id: houseID
                 },
                 include: {
                     users: true
                 }
-             });
+            });
 
-             return {
-                success: true, 
-                house: response?.name,
-                response: response?.users
-             }
-             
-
-
-
-            
-        }catch(err) {
-            console.log('Ocorreu um erro:',err)
             return {
-                sucess: false,
+                success: true,
+                house: response?.name,
+                message: "Usuários membros da casa",
+                response: response?.users ?? []
+            };
+
+        } catch (err) {
+            console.log("Ocorreu um erro:", err);
+
+            return {
+                success: false,
                 err
-            }
+            };
         }
     },
-    findFirstHouse: async(name: string) => {
-                try {
+
+
+    findFirstHouse: async (name: string) => {
+        try {
             const response = await houses.findFirst({
                 where: {
                     name
@@ -77,23 +91,27 @@ const HouseModel = {
                         }
                     }
                 }
-            
             });
+
             return {
-                sucess: true,
-                house: response
-            }
-        }catch(err) {
-            console.log('Ocorreu um erro:',err)
+                success: true,
+                message: "Casa encontrada!",
+                response
+            };
+
+        } catch (err) {
+            console.log("Ocorreu um erro:", err);
+
             return {
-                sucess: false,
+                success: false,
                 err
-            }
+            };
         }
     },
 
-    findUniqueHouse: async(houseID: number) => {
-                try {
+
+    findUniqueHouse: async (houseID: number) => {
+        try {
             const response = await houses.findUnique({
                 where: {
                     id: houseID
@@ -106,19 +124,22 @@ const HouseModel = {
                     }
                 }
             });
+
             return {
-                sucess: true,
-                house: response
-            }
-        }catch(err) {
-            console.log('Ocorreu um erro:',err)
+                success: true,
+                message: "Casa encontrada!",
+                response
+            };
+
+        } catch (err) {
+            console.log("Ocorreu um erro:", err);
+
             return {
-                sucess: false,
+                success: false,
                 err
-            }
+            };
         }
     }
-
-}
+};
 
 export default HouseModel;

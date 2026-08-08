@@ -9,6 +9,7 @@ App.use(express.json());
 App.use(cors());
 App.use("/arcanum", router);
 
+
 App.listen(PORT, () => {
     console.clear();
     console.log(`Rodando na porta http://localhost:${PORT}`)
